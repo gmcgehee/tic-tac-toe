@@ -1,0 +1,13 @@
+#board {
+    display: grid;
+    grid-row: 3;
+    grid-column: 3;
+    background-color: aqua;
+    width: 50%;
+}
+
+.box {
+    border: 3px dashed #bbb;
+    background-color: aliceblue;
+    width: 10rem;
+}
