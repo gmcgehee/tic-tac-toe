@@ -113,12 +113,27 @@ function drawShape(box) {
         }
 
         box.classList.add('checked')
-        turnCount++;
 
 
 
     } // else do nothing
 
+}
+
+const clearBox = (box) => {
+    boxClasses = Array.from(box.classList)
+        if (boxClasses.includes('box')) { // sometimes less desirable things appear, making sure it IS a box
+
+            box.classList.remove('checked')
+            box.classList.remove('x-ed')
+            box.classList.remove('o-ed')
+
+            const checkmarks = box.getElementsByClassName('checkmark')
+
+            for (const check of checkmarks) {
+                box.removeChild(check)
+            }
+        }
 }
 
 function resetBoard() {
@@ -132,26 +147,39 @@ function resetBoard() {
         ['', '', ''],
     ]
 
+    const titleBox = document.getElementById('head-box')
+    clearBox(titleBox)
+
+    const x = document.createElement('p');
+    x.className = 'checkmark'
+    x.textContent = 'X'
+
+    titleBox.appendChild(x)
+    titleBox.classList.add('x-ed')
+    titleBox.classList.add('checked')
+    
 
     for (const box of board.children) {
-        boxClasses = Array.from(box.classList)
-        if (boxClasses.includes('box')) { // sometimes less desirable things appear, making sure it IS a box
-
-            box.classList.remove('checked')
-            box.classList.remove('x-ed')
-            box.classList.remove('o-ed')
-
-            const checkmarks = box.getElementsByClassName('checkmark')
-
-            for (const check of checkmarks) {
-                box.removeChild(check)
-            }
-        }
+        clearBox(box)
     }
 }
 
 
 function addClickListeners() {
+
+    // Yes, this is redundant, but best with the way the code is currently written
+    const x = document.createElement('p');
+    x.className = 'checkmark'
+    x.textContent = 'X'
+
+    const o = document.createElement('p');
+    o.className = 'checkmark'
+    o.textContent = 'O'
+
+    const titleBox = document.getElementById('head-box')
+    titleBox.appendChild(x)
+    titleBox.classList.add('x-ed')
+    titleBox.classList.add('checked')
 
 
     for (const box of board.children) {
@@ -159,7 +187,13 @@ function addClickListeners() {
         box.addEventListener('click', () => {
 
             if (gameUnlocked) {
+
+               
+
+
                 drawShape(box)
+                turnCount++;
+
 
                 let winner = getEndGame()
 
@@ -173,6 +207,20 @@ function addClickListeners() {
                 } else if (winner === 'C') {
                     alert('tie!')
                     gameUnlocked = false
+                } else {
+                    clearBox(titleBox)
+
+                    if (turnCount % 2 === 0) {
+                        // draw an x
+                        titleBox.classList.add('x-ed')
+                        titleBox.appendChild(x);
+                    }
+
+                    else {
+                        // draw an o
+                        titleBox.classList.add('o-ed')
+                        titleBox.appendChild(o);
+                    }
                 }
             }
         });
