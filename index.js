@@ -186,11 +186,13 @@ function addClickListeners() {
 
         box.addEventListener('click', () => {
 
+            if (Array.from(box.classList).includes('checked')) {
+                return;
+            }
+
             if (gameUnlocked) {
 
                
-
-
                 drawShape(box)
                 turnCount++;
 
